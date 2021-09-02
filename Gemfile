@@ -7,3 +7,4 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 # gem "rails"
 gem 'amazing_print'
 gem 'rubocop', require: false
+gem 'pry', '~> 0.13.1'

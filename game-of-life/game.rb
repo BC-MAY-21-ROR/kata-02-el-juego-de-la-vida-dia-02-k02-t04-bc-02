@@ -1,32 +1,77 @@
+require 'pry'
+
+class Cell
+  def initialize(row, column)
+    @position_x = row
+    @position_y = column
+    @sign = '.'
+    @alive = false
+  end
+
+  def is_alive
+    @alive
+  end
+
+  def kill
+    @alive = false
+    @sign = '.'
+  end
+
+  def live
+    @alive = true
+    @sign = '*'
+  end
+
+  def print_sign
+    @sign
+  end
+end
+
 class Game
-    attr_accessor :grid
-    def initialize(arr_size = 8)
-      @grid = Array.new(arr_size) { Array.new(arr_size) {'.'}}
-    end
-end
+  attr_accessor :grid, :grid_length, :cell_initial_quantity
 
-class Cells
-    def add_cell
-      7.times do
-        @rows = rand(0..7)
-        @columns = rand(0..7)
-        @grid[rows][columns] = '*'
+  def initialize(arr_size)
+    @grid = Array.new(arr_size) { Array.new(arr_size) { nil } }
+    @grid_length = grid.length
+    @cell_initial_quantity = grid_length * 2
+  end
+
+  def init
+    populate_grid
+    born_initial_cells
+    show_input
+  end
+
+  def populate_grid
+    grid_length.times do |row|
+      grid_length.times do |column|
+        grid[row][column] = Cell.new(row, column)
       end
     end
-end
+  end
 
-class Layout
-    def display_grid
-      8.times do |number|
-        puts " #{grid[number][0]} | #{grid[number][1]} | #{grid[number][2]} | #{grid[number][3]} | #{grid[number][4]} | #{grid[number][5]} | #{grid[number][6]} | #{grid[number][7]}"
-        puts "--------------------------------"
-      end
+  def born_initial_cells
+    cell_initial_quantity.times do
+      row = rand(0...grid_length)
+      column = rand(0...grid_length)
+      grid[row][column].live
     end
+  end
+
+  def display_grid
+    test = ''
+    grid_length.times do |row|
+      grid_length.times do |column|
+        test += "#{grid[row][column].print_sign}|"
+      end
+      puts test
+      test = ''
+    end
+  end
+
+  def show_input
+    display_grid
+  end
 end
 
-def show_input
-    @Cells
-    @Layout
-end
-
-  Game.new(8).show_input
+Game.new(10).init
